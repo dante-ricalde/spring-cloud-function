@@ -1,8 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
 	id("org.springframework.boot") version "2.4.0"
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
+	id("com.github.johnrengelman.shadow") version "6.1.0"
+	id("org.springframework.boot.experimental.thin-launcher") version "1.0.25.RELEASE"
 	kotlin("jvm") version "1.4.10"
 	kotlin("plugin.spring") version "1.4.10"
 }
@@ -25,6 +29,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.cloud:spring-cloud-function-context")
 	implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
+	implementation("org.springframework.cloud:spring-cloud-function-adapter-aws")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -42,5 +47,32 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "11"
+	}
+}
+
+tasks {
+	named<ShadowJar>("shadowJar") {
+		classifier = "aws"
+		dependencies {
+			exclude(
+					dependency("org.springframework.cloud:spring-cloud-function-web"))
+		}
+		// Required for Spring
+		mergeServiceFiles()
+		append("META-INF/spring.handlers")
+		append("META-INF/spring.schemas")
+		append("META-INF/spring.tooling")
+		transform(PropertiesFileTransformer::class.java) {
+			paths = listOf("META-INF/spring.factories")
+			mergeStrategy = "append"
+		}
+	}
+	assemble {
+		dependsOn(shadowJar, thinJar)
+	}
+	jar {
+		manifest {
+			attributes(mapOf("Main-Class" to "com.example.functionsample.FunctionSampleApplication", "Starts-Class" to "com.example.functionsample.FunctionSampleApplication"))
+		}
 	}
 }
