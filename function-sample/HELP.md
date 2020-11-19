@@ -25,6 +25,8 @@ This runs the app and exposes its functions over HTTP (because of spring-cloud-s
     java -jar build/libs/*.jar 
 you can convert a string to uppercase, like this:
     curl -H "Content-Type: text/plain" localhost:8080/uppercase -d Hello
+    // As there is only a single function, the same function can be invoked like this
+    curl -H "Content-Type: text/plain" localhost:8080 -d Hello
     curl -H "Content-Type: application/json" localhost:8080/uppercase -d Hello
 You can convert multiple strings (a Flux<String>) by separating them with new lines
     // this command it didn't work because it sends the body in 1 message (1 chunk) => onNext(Hello

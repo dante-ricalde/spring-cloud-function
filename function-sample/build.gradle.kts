@@ -7,9 +7,12 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
 	id("com.github.johnrengelman.shadow") version "6.1.0"
 	id("org.springframework.boot.experimental.thin-launcher") version "1.0.25.RELEASE"
+	id("net.ltgt.apt-idea") version "0.21"
 	kotlin("jvm") version "1.4.10"
 	kotlin("plugin.spring") version "1.4.10"
 }
+
+apply(plugin = "net.ltgt.apt-idea")
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
@@ -17,12 +20,13 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	jcenter()
 	maven { url = uri("https://repo.spring.io/snapshot") }
 	maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 extra["springCloudVersion"] = "2020.0.0-SNAPSHOT"
- 
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -30,6 +34,12 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-function-context")
 	implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
 	implementation("org.springframework.cloud:spring-cloud-function-adapter-aws")
+	//implementation("org.springframework.cloud:spring-cloud-function-kotlin")
+	// This dependency brings KotlinLambdaToFunctionAutoConfiguration to convert Kotlin lambdas to Java lambdas (Consumer, Function, Supplier)
+	//implementation("org.springframework.cloud:spring-cloud-function-kotlin:3.0.11.RELEASE")
+	/*implementation("com.amazonws:aws-lambda-java-core:1.2.0")
+	implementation("com.amazonws:aws-lambda-java-events:2.2.6")
+	implementation("com.amazonaws:aws-java-sdk-s3:1.11.557")*/
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -68,6 +78,7 @@ tasks {
 		}
 	}
 	assemble {
+		//dependsOn(shadowJar)
 		dependsOn(shadowJar, thinJar)
 	}
 	jar {
@@ -76,3 +87,10 @@ tasks {
 		}
 	}
 }
+
+/*idea {
+	module {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}*/
