@@ -32,7 +32,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.cloud:spring-cloud-function-context")
-	implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
+	//implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
 	implementation("org.springframework.cloud:spring-cloud-function-adapter-aws")
 	//implementation("org.springframework.cloud:spring-cloud-function-kotlin")
 	// This dependency brings KotlinLambdaToFunctionAutoConfiguration to convert Kotlin lambdas to Java lambdas (Consumer, Function, Supplier)
