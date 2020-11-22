@@ -29,6 +29,13 @@ class FunctionSampleApplication : ApplicationContextInitializer<GenericApplicati
             }
         )
     }
+
+    /*companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            FunctionalSpringApplication.run(FunctionSampleApplication::class.java, *args)
+        }
+    }*/
 }
 
 fun main(args: Array<String>) {

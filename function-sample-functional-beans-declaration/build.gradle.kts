@@ -26,13 +26,16 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2020.0.0-SNAPSHOT"
+//val mainClass: String by project
+val startClass: String by project
+val mainStartClass: String by project
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.cloud:spring-cloud-function-context")
-	//implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
+	// implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
 	implementation("org.springframework.cloud:spring-cloud-function-adapter-aws")
 	//implementation("org.springframework.cloud:spring-cloud-function-kotlin")
 	// This dependency brings KotlinLambdaToFunctionAutoConfiguration to convert Kotlin lambdas to Java lambdas (Consumer, Function, Supplier)
@@ -78,14 +81,25 @@ tasks {
 		}
 	}
 	assemble {
-		//dependsOn(shadowJar)
+		// dependsOn(shadowJar)
 		dependsOn(shadowJar, thinJar)
 	}
 	jar {
 		manifest {
-			attributes(mapOf("Main-Class" to "com.example.functionsample.FunctionSampleApplication", "Starts-Class" to "com.example.functionsample.FunctionSampleApplication"))
+			println("Configured main class is: $startClass")
+			attributes(mapOf("Main-Class" to "$startClass", "Starts-Class" to "$startClass"))
 		}
 	}
+
+	/*tasks.getByName<BootJar>("bootJar") {
+		manifest {
+			attributes("Start-Class" to "$startClass")
+		}
+	}*/
+}
+
+springBoot {
+	mainClass.set("$mainStartClass")
 }
 
 /*idea {

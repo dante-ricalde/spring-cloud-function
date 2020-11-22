@@ -23,6 +23,7 @@ These additional references should also help you:
 Run the sample
 This runs the app and exposes its functions over HTTP (because of spring-cloud-starter-function-webflux is present on classpath)
     java -jar build/libs/*.jar 
+    java -jar build/libs/function-sample-0.0.1-SNAPSHOT.jar
 you can convert a string to uppercase, like this:
     curl -H "Content-Type: text/plain" localhost:8080/uppercase -d Hello
     // As there is only a single function, the same function can be invoked like this
