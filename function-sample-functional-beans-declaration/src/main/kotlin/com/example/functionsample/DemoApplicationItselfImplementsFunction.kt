@@ -1,5 +1,6 @@
 package com.example.functionsample
 
+import mu.KotlinLogging.logger
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.cloud.function.context.FunctionalSpringApplication
 import java.util.function.Function
@@ -23,10 +24,13 @@ import java.util.function.Function
  *         </ul>
  * @version 1.0
  */
+private val logger = logger {}
+
 @SpringBootConfiguration
 class DemoApplicationItselfImplementsFunction : Function<String, String> {
 
     override fun apply(value: String): String {
+        logger.info { "uppercasing value => $value" }
         return value.toUpperCase()
     }
 }

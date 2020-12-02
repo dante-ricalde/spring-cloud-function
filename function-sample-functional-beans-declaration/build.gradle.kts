@@ -43,6 +43,7 @@ dependencies {
 	/*implementation("com.amazonws:aws-lambda-java-core:1.2.0")
 	implementation("com.amazonws:aws-lambda-java-events:2.2.6")
 	implementation("com.amazonaws:aws-java-sdk-s3:1.11.557")*/
+	implementation("io.github.microutils:kotlin-logging-jvm:2.0.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
